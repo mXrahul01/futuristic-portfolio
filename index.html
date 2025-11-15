@@ -162,15 +162,6 @@
         </div>
     </section>
 
-    <script>
-        document.getElementById("download-resume").addEventListener("click", function () {
-            const link = document.createElement("a");
-            link.href = "public/assets/resume/RahulTalvarO.pdf";
-            link.download = "RahulTalvar_Resume.pdf";
-            link.click();
-        });
-    </script>
-
     <!-- Skills Section -->
     <section id="skills" class="skills">
         <div class="container">
@@ -242,7 +233,7 @@
                         <div class="skill-item">
                             <span class="skill-name">Git & Jupyter</span>
                             <div class="skill-bar"><div class="skill-progress" data-progress="85"></div></div>
-
+                        </div>
                         <div class="skill-item">
                             <span class="skill-name">Scikit-learn</span>
                             <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
@@ -436,18 +427,49 @@
 
                     <div class="social-links">
                         <a href="https://linkedin.com/in/rahultalvar" target="_blank"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://github.com/mXrahul01" target="_blank"><i class="fab fa-github"></i></a>
                         <a href="mailto:rahultalvar902@gmail.com"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
 
                 <div class="contact-form-container" data-scroll>
-                    <form class="contact-form glass-card" action="#" method="POST">
+                    <form class="contact-form glass-card" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
 
                         <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" required>
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
                         </div>
 
                         <div class="form-group">
-                            <label
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary">Send Message</button>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        document.getElementById("download-resume").addEventListener("click", function () {
+            const link = document.createElement("a");
+            link.href = "assets/resume/RahulTalvar_Resume.pdf";
+            link.download = "RahulTalvar_Resume.pdf";
+            link.click();
+        });
+    </script>
+
+</body>
+</html>
