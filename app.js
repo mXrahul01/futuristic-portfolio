@@ -82,14 +82,6 @@ const certificatesData = [
   },
   {
     id: 11,
-    title: 'Data Science Course Certificate',
-    category: 'Course',
-    issuer: 'Technophilia',
-    year: '2024',
-    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Rahul-Talvar-Data-Science-Course-Course-Certificate-Technophilia.png'
-  },
-  {
-    id: 12,
     title: 'SQL Bootcamp',
     category: 'Bootcamp',
     issuer: 'Training Platform',
@@ -97,7 +89,7 @@ const certificatesData = [
     url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/SQL%20Bootcamp%20.png'
   },
   {
-    id: 13,
+    id: 12,
     title: 'Supervised Machine Learning: Regression and Classification',
     category: 'Course',
     issuer: 'Coursera',
