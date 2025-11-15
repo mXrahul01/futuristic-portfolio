@@ -398,24 +398,43 @@ document.addEventListener('keydown', (e) => {
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('form-status');
 
-contactForm.addEventListener('submit', (e) => {
+contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const message = document.getElementById('message').value;
+  const formData = new FormData(contactForm);
   
-  // Simulate form submission
-  formStatus.className = 'success';
-  formStatus.textContent = 'Thank you for your message! I will get back to you soon.';
+  // Show sending message
+  formStatus.style.display = 'block';
+  formStatus.className = '';
+  formStatus.textContent = 'Sending...';
   
-  // Reset form
-  contactForm.reset();
+  try {
+    const response = await fetch('https://getform.io/f/bdrdeylb', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (response.ok) {
+      formStatus.className = 'success';
+      formStatus.textContent = 'Thank you for your message! I will get back to you soon.';
+      contactForm.reset();
+    } else {
+      formStatus.className = 'error';
+      formStatus.textContent = 'Oops! There was a problem sending your message. Please try again.';
+    }
+  } catch (error) {
+    formStatus.className = 'error';
+    formStatus.textContent = 'Oops! There was a problem sending your message. Please try again.';
+  }
   
   // Hide status after 5 seconds
   setTimeout(() => {
     formStatus.style.display = 'none';
   }, 5000);
+});
 });
 
 // Initialize certificates on page load
