@@ -1,604 +1,447 @@
-// DOM Elements
-const loadingScreen = document.getElementById('loading-screen');
-const navbar = document.getElementById('navbar');
-const themeToggle = document.getElementById('theme-toggle');
-const themeIcon = document.getElementById('theme-icon');
-const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-const navMenu = document.getElementById('nav-menu');
-const particlesCanvas = document.getElementById('particles-canvas');
-const contactForm = document.getElementById('contact-form');
-const formStatus = document.getElementById('form-status');
-const downloadResumeBtn = document.getElementById('download-resume');
+// Certificate Data
+const certificatesData = [
+  {
+    id: 1,
+    title: 'Certificate Of Excellence - Scaler',
+    category: 'Course',
+    issuer: 'Scaler',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Certificate%20Of%20Excellence%20Scaler.png'
+  },
+  {
+    id: 2,
+    title: 'Data Science Course Completion',
+    category: 'Course',
+    issuer: 'Technophilia',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Data%20Science%20Course%20Completion%20Technophilia.png'
+  },
+  {
+    id: 3,
+    title: 'Git & Github BootCamp',
+    category: 'Bootcamp',
+    issuer: 'Udemy',
+    year: '2025',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Git%20%26%20Github%20BootCamp.png'
+  },
+  {
+    id: 4,
+    title: 'Machine Learning Using Python Bootcamp',
+    category: 'Bootcamp',
+    issuer: 'Training Platform',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Machine%20Learning%20Using%20Python%20Bootcamp.png'
+  },
+  {
+    id: 5,
+    title: 'Model Creator Badge',
+    category: 'Kaggle',
+    issuer: 'Kaggle',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Model%20Creator.png'
+  },
+  {
+    id: 6,
+    title: 'Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate',
+    category: 'Oracle',
+    issuer: 'Oracle',
+    year: '2025',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Oracle%20Cloud%20Infrastructure%202025%20Certified%20AI%20Foundations%20Associate.png'
+  },
+  {
+    id: 7,
+    title: 'Oracle Cloud Infrastructure 2025 Certified Data Science Professional',
+    category: 'Oracle',
+    issuer: 'Oracle',
+    year: '2025',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Oracle%20Cloud%20Infrastructure%202025%20Certified%20Data%20Science%20Professional.png'
+  },
+  {
+    id: 8,
+    title: 'Oracle Cloud Infrastructure 2025 Certified Foundations Associate',
+    category: 'Oracle',
+    issuer: 'Oracle',
+    year: '2025',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Oracle%20Cloud%20Infrastructure%202025%20Certified%20Foundations%20Associate.png'
+  },
+  {
+    id: 9,
+    title: 'Oracle Cloud Infrastructure 2025 Certified Generative AI Professional',
+    category: 'Oracle',
+    issuer: 'Oracle',
+    year: '2025',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Oracle%20Cloud%20Infrastructure%202025%20Certified%20Generative%20AI%20Professional.png'
+  },
+  {
+    id: 10,
+    title: 'Python Coder Badge',
+    category: 'Kaggle',
+    issuer: 'Kaggle',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Python%20Coder1.png'
+  },
+  {
+    id: 11,
+    title: 'Data Science Course Certificate',
+    category: 'Course',
+    issuer: 'Technophilia',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Rahul-Talvar-Data-Science-Course-Course-Certificate-Technophilia.png'
+  },
+  {
+    id: 12,
+    title: 'SQL Bootcamp',
+    category: 'Bootcamp',
+    issuer: 'Training Platform',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/SQL%20Bootcamp%20.png'
+  },
+  {
+    id: 13,
+    title: 'Supervised Machine Learning: Regression and Classification',
+    category: 'Course',
+    issuer: 'Coursera',
+    year: '2024',
+    url: 'https://raw.githubusercontent.com/mXrahul01/Rahul-Talvar-Portfolio-Website/main/public/assets/Certificates/Supervised%20Machine%20Learning%20Regression%20and%20Classification%20CourseEra.png'
+  }
+];
 
-// Global Variables
-let currentTheme = localStorage.getItem('theme') || 'light';
-let particles = [];
-let animationId;
-
-// Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
-    initializeTheme();
-    initializeLoading();
-    initializeNavigation();
-    initializeParticles();
-    initializeScrollAnimations();
-    initializeSkillBars();
-    initializeCertificateCarousel();
-    initializeContactForm();
-    initializeMobileMenu();
-    initializeResumeDownload();
-});
-
-// Theme Management
-function initializeTheme() {
-    document.documentElement.setAttribute('data-color-scheme', currentTheme);
-    updateThemeIcon();
-}
-
-function toggleTheme() {
-    themeToggle.classList.add('rotating');
-    
-    setTimeout(() => {
-        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-color-scheme', currentTheme);
-        localStorage.setItem('theme', currentTheme);
-        updateThemeIcon();
-        themeToggle.classList.remove('rotating');
-    }, 150);
-}
-
-function updateThemeIcon() {
-    themeIcon.className = currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
-}
+let currentCertificates = [...certificatesData];
+let currentModalIndex = 0;
 
 // Loading Screen
-function initializeLoading() {
-    const loaderProgress = document.querySelector('.loader-progress');
-    let progress = 0;
-    
-    const loadingInterval = setInterval(() => {
-        progress += Math.random() * 30;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(loadingInterval);
-            
-            setTimeout(() => {
-                loadingScreen.classList.add('fade-out');
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    startHeroAnimations();
-                }, 500);
-            }, 300);
-        }
-        loaderProgress.style.width = progress + '%';
-    }, 200);
-}
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+  }, 2000);
+});
 
-function startHeroAnimations() {
-    // Trigger hero section animations
-    const heroElements = document.querySelectorAll('.hero-name, .hero-subtitle, .hero-description, .hero-buttons, .hero-image');
-    heroElements.forEach(element => {
-        element.style.opacity = '1';
-        element.style.transform = 'translateY(0)';
-    });
-}
+// Navbar Scroll Effect
+const navbar = document.getElementById('navbar');
+let lastScroll = 0;
 
-// Navigation
-function initializeNavigation() {
-    // Smooth scrolling for navigation links
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', handleSmoothScroll);
-    });
-    
-    // Scroll spy for active navigation
-    window.addEventListener('scroll', handleScrollSpy);
-    
-    // Navbar background on scroll
-    window.addEventListener('scroll', handleNavbarScroll);
-    
-    // Theme toggle
-    themeToggle.addEventListener('click', toggleTheme);
-}
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+  
+  if (currentScroll > 100) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+  
+  lastScroll = currentScroll;
+});
 
-function handleSmoothScroll(e) {
-    e.preventDefault();
-    const targetId = this.getAttribute('href');
-    const targetSection = document.querySelector(targetId);
+// Mobile Menu Toggle
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking a link
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    navMenu.classList.remove('active');
+  });
+});
+
+// Active Navigation Link
+const sections = document.querySelectorAll('.section, .hero');
+const navLinks = document.querySelectorAll('.nav-link');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
     
-    if (targetSection) {
-        const offsetTop = targetSection.offsetTop - 70; // Account for navbar height
-        window.scrollTo({
-            top: offsetTop,
-            behavior: 'smooth'
-        });
-        
-        // Close mobile menu if open
-        navMenu.classList.remove('active');
-        mobileMenuToggle.classList.remove('active');
+    if (pageYOffset >= sectionTop - 200) {
+      current = section.getAttribute('id');
     }
+  });
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === `#${current}`) {
+      link.classList.add('active');
+    }
+  });
+});
+
+// Theme Toggle
+const themeBtn = document.querySelector('.theme-btn');
+const html = document.documentElement;
+
+themeBtn.addEventListener('click', () => {
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  html.setAttribute('data-theme', newTheme);
+  
+  const icon = themeBtn.querySelector('i');
+  if (newTheme === 'light') {
+    icon.classList.remove('fa-moon');
+    icon.classList.add('fa-sun');
+  } else {
+    icon.classList.remove('fa-sun');
+    icon.classList.add('fa-moon');
+  }
+});
+
+// Particle Animation
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 1;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.opacity = Math.random() * 0.5 + 0.2;
+  }
+  
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    
+    if (this.x > canvas.width) this.x = 0;
+    if (this.x < 0) this.x = canvas.width;
+    if (this.y > canvas.height) this.y = 0;
+    if (this.y < 0) this.y = canvas.height;
+  }
+  
+  draw() {
+    ctx.fillStyle = `rgba(0, 212, 255, ${this.opacity})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
-function handleScrollSpy() {
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const scrollPos = window.scrollY + 100;
-    
-    sections.forEach(section => {
-        const top = section.offsetTop;
-        const bottom = top + section.offsetHeight;
-        const id = section.getAttribute('id');
-        
-        if (scrollPos >= top && scrollPos < bottom) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${id}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    });
+const particles = [];
+for (let i = 0; i < 80; i++) {
+  particles.push(new Particle());
 }
 
-function handleNavbarScroll() {
-    if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(var(--color-surface-rgb), 0.95)';
-    } else {
-        navbar.style.background = 'rgba(var(--color-surface-rgb), 0.9)';
-    }
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  particles.forEach(particle => {
+    particle.update();
+    particle.draw();
+  });
+  
+  requestAnimationFrame(animateParticles);
 }
 
-// Mobile Menu
-function initializeMobileMenu() {
-    mobileMenuToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        mobileMenuToggle.classList.toggle('active');
-    });
-    
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!navbar.contains(e.target)) {
-            navMenu.classList.remove('active');
-            mobileMenuToggle.classList.remove('active');
-        }
-    });
-}
+animateParticles();
 
-// Particle System
-function initializeParticles() {
-    const canvas = particlesCanvas;
-    const ctx = canvas.getContext('2d');
-    
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    
-    function createParticles() {
-        particles = [];
-        const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
-        
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                radius: Math.random() * 2 + 1,
-                alpha: Math.random() * 0.5 + 0.2
-            });
-        }
-    }
-    
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Get theme-appropriate colors
-        const isDark = currentTheme === 'dark';
-        const particleColor = isDark ? '50, 184, 198' : '33, 128, 141';
-        
-        particles.forEach(particle => {
-            // Update position
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            
-            // Wrap around edges
-            if (particle.x < 0) particle.x = canvas.width;
-            if (particle.x > canvas.width) particle.x = 0;
-            if (particle.y < 0) particle.y = canvas.height;
-            if (particle.y > canvas.height) particle.y = 0;
-            
-            // Draw particle
-            ctx.beginPath();
-            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${particleColor}, ${particle.alpha})`;
-            ctx.fill();
-        });
-        
-        // Draw connections
-        particles.forEach((particle, i) => {
-            particles.slice(i + 1).forEach(otherParticle => {
-                const dx = particle.x - otherParticle.x;
-                const dy = particle.y - otherParticle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 100) {
-                    ctx.beginPath();
-                    ctx.moveTo(particle.x, particle.y);
-                    ctx.lineTo(otherParticle.x, otherParticle.y);
-                    ctx.strokeStyle = `rgba(${particleColor}, ${0.1 * (1 - distance / 100)})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
-                }
-            });
-        });
-        
-        animationId = requestAnimationFrame(animateParticles);
-    }
-    
-    resizeCanvas();
-    createParticles();
-    animateParticles();
-    
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        createParticles();
-    });
-}
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 
 // Scroll Animations
-function initializeScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('scroll-visible');
-            }
-        });
-    }, observerOptions);
-    
-    document.querySelectorAll('[data-scroll]').forEach(element => {
-        observer.observe(element);
-    });
-}
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px'
+};
 
-// Skill Bars Animation
-function initializeSkillBars() {
-    const skillObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const skillBars = entry.target.querySelectorAll('.skill-progress');
-                skillBars.forEach(bar => {
-                    const progress = bar.getAttribute('data-progress');
-                    setTimeout(() => {
-                        bar.style.width = progress + '%';
-                    }, 200);
-                });
-                skillObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    document.querySelectorAll('.skill-category').forEach(category => {
-        skillObserver.observe(category);
-    });
-}
-
-// Certificate Carousel
-function initializeCertificateCarousel() {
-    const certTrack = document.getElementById('cert-track');
-    if (!certTrack) return;
-    
-    // Clone certificates for infinite scroll
-    const certificates = certTrack.innerHTML;
-    certTrack.innerHTML += certificates; // Duplicate for seamless loop
-    
-    // Pause animation on hover
-    const certCarousel = document.querySelector('.cert-carousel');
-    if (certCarousel) {
-        certCarousel.addEventListener('mouseenter', () => {
-            certTrack.style.animationPlayState = 'paused';
-        });
-        
-        certCarousel.addEventListener('mouseleave', () => {
-            certTrack.style.animationPlayState = 'running';
-        });
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
     }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in').forEach(el => {
+  observer.observe(el);
+});
+
+// Skill Bar Animations
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const progressBars = entry.target.querySelectorAll('.skill-progress');
+      progressBars.forEach(bar => {
+        const progress = bar.getAttribute('data-progress');
+        bar.style.setProperty('--progress', `${progress}%`);
+        bar.classList.add('animated');
+      });
+    }
+  });
+}, { threshold: 0.5 });
+
+const skillsSection = document.getElementById('skills');
+if (skillsSection) {
+  skillObserver.observe(skillsSection);
 }
+
+// Certificate Functions
+function renderCertificates(certificates) {
+  const grid = document.getElementById('certificatesGrid');
+  grid.innerHTML = '';
+  
+  certificates.forEach((cert, index) => {
+    const card = document.createElement('div');
+    card.className = 'cert-card';
+    card.style.animationDelay = `${index * 0.1}s`;
+    
+    card.innerHTML = `
+      <div class="cert-thumbnail">
+        <img src="${cert.url}" alt="${cert.title}" loading="lazy" onerror="this.parentElement.innerHTML='<i class=\"fas fa-certificate\" style=\"font-size: 4rem; color: var(--vibrant-teal);\"></i>';">
+        <div class="cert-overlay">
+          <i class="fas fa-expand"></i>
+        </div>
+        <div class="cert-category-badge badge-${cert.category.toLowerCase()}">
+          ${cert.category}
+        </div>
+      </div>
+      <div class="cert-info">
+        <h3>${cert.title}</h3>
+        <div class="cert-meta">
+          <span><i class="fas fa-building"></i> ${cert.issuer}</span>
+          <span><i class="fas fa-calendar"></i> ${cert.year}</span>
+        </div>
+      </div>
+    `;
+    
+    card.addEventListener('click', () => openModal(cert, certificates));
+    grid.appendChild(card);
+  });
+}
+
+// Certificate Filters
+function setupCertificateFilters() {
+  const filterBtns = document.querySelectorAll('.cert-filter-btn');
+  
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Update active state
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // Filter certificates
+      const category = btn.getAttribute('data-category');
+      if (category === 'all') {
+        currentCertificates = [...certificatesData];
+      } else {
+        currentCertificates = certificatesData.filter(cert => cert.category === category);
+      }
+      
+      renderCertificates(currentCertificates);
+    });
+  });
+}
+
+// Modal Functions
+function openModal(certificate, certificatesList) {
+  const modal = document.getElementById('certificateModal');
+  currentCertificates = certificatesList;
+  currentModalIndex = certificatesList.findIndex(c => c.id === certificate.id);
+  
+  updateModalContent(certificate);
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  const modal = document.getElementById('certificateModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function updateModalContent(certificate) {
+  document.getElementById('modalTitle').textContent = certificate.title;
+  document.getElementById('modalIssuer').innerHTML = `<i class="fas fa-building"></i> ${certificate.issuer}`;
+  document.getElementById('modalYear').innerHTML = `<i class="fas fa-calendar"></i> ${certificate.year}`;
+  document.getElementById('modalCategory').innerHTML = `<i class="fas fa-tag"></i> ${certificate.category}`;
+  
+  const modalContent = document.getElementById('modalContent');
+  modalContent.innerHTML = `<img src="${certificate.url}" alt="${certificate.title}" onerror="this.parentElement.innerHTML='<div class=\"pdf-preview\"><i class=\"fas fa-exclamation-triangle\"></i><h3>Unable to load certificate</h3><p>Please try downloading to view</p></div>';">`;
+  
+  // Update download button
+  document.getElementById('downloadBtn').onclick = () => window.open(certificate.url, '_blank');
+}
+
+function showNextCert() {
+  currentModalIndex = (currentModalIndex + 1) % currentCertificates.length;
+  updateModalContent(currentCertificates[currentModalIndex]);
+}
+
+function showPrevCert() {
+  currentModalIndex = (currentModalIndex - 1 + currentCertificates.length) % currentCertificates.length;
+  updateModalContent(currentCertificates[currentModalIndex]);
+}
+
+// Modal Event Listeners
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.getElementById('nextCert').addEventListener('click', showNextCert);
+document.getElementById('prevCert').addEventListener('click', showPrevCert);
+
+document.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+
+// Keyboard navigation for modal
+document.addEventListener('keydown', (e) => {
+  const modal = document.getElementById('certificateModal');
+  if (modal.classList.contains('active')) {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowRight') showNextCert();
+    if (e.key === 'ArrowLeft') showPrevCert();
+  }
+});
 
 // Contact Form
-function initializeContactForm() {
-    if (!contactForm) return;
-    
-    contactForm.addEventListener('submit', handleFormSubmission);
-    
-    // Add focus effects to form inputs
-    const formInputs = contactForm.querySelectorAll('input, textarea');
-    formInputs.forEach(input => {
-        input.addEventListener('focus', (e) => {
-            e.target.parentElement.classList.add('focused');
-        });
-        
-        input.addEventListener('blur', (e) => {
-            if (!e.target.value) {
-                e.target.parentElement.classList.remove('focused');
-            }
-        });
-    });
-}
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('form-status');
 
-async function handleFormSubmission(e) {
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const message = document.getElementById('message').value;
+  
+  // Simulate form submission
+  formStatus.className = 'success';
+  formStatus.textContent = 'Thank you for your message! I will get back to you soon.';
+  
+  // Reset form
+  contactForm.reset();
+  
+  // Hide status after 5 seconds
+  setTimeout(() => {
+    formStatus.style.display = 'none';
+  }, 5000);
+});
+
+// Initialize certificates on page load
+document.addEventListener('DOMContentLoaded', () => {
+  renderCertificates(certificatesData);
+  setupCertificateFilters();
+});
+
+// Smooth Scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
     e.preventDefault();
-    
-    const formData = new FormData(contactForm);
-    const submitButton = contactForm.querySelector('.form-submit');
-    const originalText = submitButton.innerHTML;
-    
-    // Show loading state
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-    submitButton.disabled = true;
-    
-    try {
-        const response = await fetch(contactForm.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        if (response.ok) {
-            showFormStatus('Thank you! Your message has been sent successfully.', 'success');
-            contactForm.reset();
-        } else {
-            throw new Error('Form submission failed');
-        }
-    } catch (error) {
-        showFormStatus('Sorry, there was an error sending your message. Please try again.', 'error');
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     }
-    
-    // Reset button
-    submitButton.innerHTML = originalText;
-    submitButton.disabled = false;
-}
-
-function showFormStatus(message, type) {
-    formStatus.textContent = message;
-    formStatus.className = `form-status ${type}`;
-    formStatus.style.display = 'block';
-    
-    setTimeout(() => {
-        formStatus.style.display = 'none';
-    }, 5000);
-}
-
-// Resume Download
-function initializeResumeDownload() {
-    if (!downloadResumeBtn) return;
-    
-    downloadResumeBtn.addEventListener('click', () => {
-        // Create a temporary resume content (in a real scenario, this would be a PDF file)
-        const resumeContent = generateResumeContent();
-        const blob = new Blob([resumeContent], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Rahul_Talvar_Resume.txt';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        
-        // Show success message
-        const originalText = downloadResumeBtn.innerHTML;
-        downloadResumeBtn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
-        downloadResumeBtn.style.background = 'var(--color-success)';
-        
-        setTimeout(() => {
-            downloadResumeBtn.innerHTML = originalText;
-            downloadResumeBtn.style.background = '';
-        }, 2000);
-    });
-}
-
-function generateResumeContent() {
-    return `RAHUL TALVAR
-Data Analyst | Data Science Enthusiast | Machine Learning Engineer
-
-CONTACT INFORMATION
-Email: rahultalvar902@gmail.com
-Phone: +91 9156184711
-Location: Pune, India
-LinkedIn: linkedin.com/in/rahultalvar
-
-EDUCATION
-BE in Artificial Intelligence and Data Science (2021-2025)
-Ajeenkya DY Patil School Of Engineering | SPPU
-
-HSC: 85.83% (2021)
-SSC: 87% (2019)
-
-TECHNICAL SKILLS
-Programming Languages: Python, SQL, JavaScript
-ML & AI: Machine Learning, Deep Learning, Predictive Modeling, Liquid Neural Networks
-Data Analysis: Pandas, NumPy, Scikit-learn, EDA, Data Cleaning
-Tools & Frameworks: Tableau, Git, Flask, Jupyter Notebook
-
-PROFESSIONAL EXPERIENCE
-Data Science Intern | Technophilia Solution | Dec 2023 - Jan 2024
-• Developed a Python-based system to evaluate employee performance metrics, enhancing decision-making efficiency by 30%
-• Automated evaluation using machine learning, reducing human bias and saving 20% manual effort
-
-PROJECTS
-1. Chest X-Ray Disease Prediction
-   - Developed deep learning model with Liquid Neural Networks
-   - Achieved 94% accuracy for Pneumonia detection and 90% for Lung Opacity classification
-   - Integrated into Flask-based web application
-   
-2. Loan Default Analysis
-   - Built robust predictive model for banking operations
-   - Applied data preprocessing and optimized ML algorithms
-   
-3. Uber Data Analysis
-   - Performed comprehensive EDA and data visualization
-   - Created interactive dashboards for business insights
-
-CERTIFICATIONS
-• Machine Learning Specialization (Coursera, 2023)
-• Data Science Course (Technophilia Solution, 2023)
-• SQL 5 Day Bootcamp (2023)
-• Personality Development Course (2023)
-
-LANGUAGES
-English (Proficient), Hindi (Proficient), Marathi (Native)`;
-}
-
-// Utility Functions
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    }
-}
-
-// Performance optimizations
-const optimizedScrollHandler = throttle(handleScrollSpy, 100);
-const optimizedNavbarHandler = throttle(handleNavbarScroll, 50);
-
-// Replace event listeners with optimized versions
-window.removeEventListener('scroll', handleScrollSpy);
-window.removeEventListener('scroll', handleNavbarScroll);
-window.addEventListener('scroll', optimizedScrollHandler);
-window.addEventListener('scroll', optimizedNavbarHandler);
-
-// Handle page visibility changes to pause/resume animations
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        if (animationId) {
-            cancelAnimationFrame(animationId);
-        }
-    } else {
-        if (particlesCanvas) {
-            animateParticles();
-        }
-    }
+  });
 });
-
-// Add tilt effect to project cards
-function initializeTiltEffect() {
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    projectCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-        });
-    });
-}
-
-// Initialize tilt effect after DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(initializeTiltEffect, 1000); // Delay to ensure cards are rendered
-});
-
-// Add parallax effect to hero section
-function initializeParallax() {
-    const hero = document.querySelector('.hero');
-    const heroContent = document.querySelector('.hero-content');
-    
-    if (!hero || !heroContent) return;
-    
-    const parallaxHandler = throttle(() => {
-        const scrolled = window.pageYOffset;
-        const rate = scrolled * -0.5;
-        heroContent.style.transform = `translateY(${rate}px)`;
-    }, 16);
-    
-    window.addEventListener('scroll', parallaxHandler);
-}
-
-// Initialize parallax effect
-document.addEventListener('DOMContentLoaded', initializeParallax);
-
-// Add smooth hover effects for buttons
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.btn');
-    
-    buttons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
-        });
-        
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-});
-
-// Keyboard navigation support
-document.addEventListener('keydown', (e) => {
-    // ESC key closes mobile menu
-    if (e.key === 'Escape') {
-        navMenu.classList.remove('active');
-        mobileMenuToggle.classList.remove('active');
-    }
-    
-    // Tab navigation enhancement
-    if (e.key === 'Tab') {
-        document.body.classList.add('keyboard-nav');
-    }
-});
-
-document.addEventListener('mousedown', () => {
-    document.body.classList.remove('keyboard-nav');
-});
-
-// Add CSS for keyboard navigation
-const keyboardNavCSS = `
-.keyboard-nav *:focus {
-    outline: 2px solid var(--color-primary) !important;
-    outline-offset: 2px !important;
-}
-`;
-
-const style = document.createElement('style');
-style.textContent = keyboardNavCSS;
-document.head.appendChild(style);
-
-console.log('🚀 Rahul Talvar Portfolio - Loaded Successfully!');
