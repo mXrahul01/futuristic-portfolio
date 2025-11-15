@@ -435,7 +435,6 @@ contactForm.addEventListener('submit', async (e) => {
     formStatus.style.display = 'none';
   }, 5000);
 });
-});
 
 // Initialize certificates on page load
 document.addEventListener('DOMContentLoaded', () => {
